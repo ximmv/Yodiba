@@ -7,6 +7,10 @@ main_menu = ReplyKeyboardMarkup(
             KeyboardButton(text="🖼️ Rasm yaratish"),
         ],
         [
+            KeyboardButton(text="🎬 Video yaratish"),
+            KeyboardButton(text="🎵 Musiqa yaratish"),
+        ],
+        [
             KeyboardButton(text="🧠 AI vositalari"),
             KeyboardButton(text="👤 Profil"),
         ],
@@ -15,6 +19,7 @@ main_menu = ReplyKeyboardMarkup(
             KeyboardButton(text="⚙️ Sozlamalar"),
         ],
         [
+            KeyboardButton(text="📢 Yangiliklar"),
             KeyboardButton(text="ℹ️ Yordam"),
         ],
     ],
