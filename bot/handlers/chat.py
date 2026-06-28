@@ -13,7 +13,7 @@ async def chat_handler(message: Message):
     if not text:
         return
 
-    wait = await message.answer("✍️Yozmoqda...")
+    wait = await message.answer("✍️ Yozmoqda...")
 
     response = await generate_text(text)
 
