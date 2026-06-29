@@ -1,7 +1,8 @@
-from aiogram import Router
-from aiogram.enums import ChatAction
-from aiogram.types import Message
+await message.bot.send_chat_action(
+    chat_id=message.chat.id,
+    action=ChatAction.TYPING,
+)
 
-from bot.ai.gemini import generate_text
+response = await generate_text(text)
 
-router = Router()
+await message.answer(response)
