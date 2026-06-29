@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  yodiba:
+    build: .
+    container_name: yodiba_ai
+    restart: always
+    env_file:
+      - .env
