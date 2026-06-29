@@ -39,4 +39,4 @@ python main.py
 
 Muallif
 
-Yodgorbek Ibaydullayev
+Yodgorbek Ulugʻbek oʻgʻli 
