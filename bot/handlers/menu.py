@@ -1,14 +1,19 @@
 from aiogram import Router, F
 from aiogram.types import Message
 
+from database import clear_history
+
 router = Router()
 
 
 @router.message(F.text == "💬 Yangi suhbat")
 async def new_chat(message: Message):
+    clear_history(message.from_user.id)
+
     await message.answer(
-        "💬 Yangi suhbat boshlandi.\n\n"
-        "Menga istalgan savolingizni yozing."
+        "🧹 Suhbat tarixi tozalandi.\n\n"
+        "💬 Yangi suhbat boshlandi.\n"
+        "Endi istalgan savolingizni yozishingiz mumkin."
     )
 
 
