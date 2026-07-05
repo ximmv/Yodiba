@@ -10,6 +10,19 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT
 )
 """)
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    role TEXT,
+    text TEXT
+)
+""")
+
+conn.commit()
+
+
 def add_user(user_id, full_name, username):
     cursor.execute(
         """
@@ -69,14 +82,3 @@ def clear_history(user_id):
         (user_id,),
     )
     conn.commit()
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS messages (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    role TEXT,
-    text TEXT
-)
-""")
-
-conn.commit()
