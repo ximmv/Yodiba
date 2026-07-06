@@ -81,4 +81,4 @@ async def news(message: Message):
 async def help_handler(message: Message):
     await message.answer(
         "ℹ️ Savolingiz bo'lsa, shu bot orqali yozishingiz mumkin."
-    )
+    ) 
