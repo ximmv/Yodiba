@@ -6,6 +6,7 @@ from config.config import bot
 from bot.handlers.start import router as start_router
 from bot.handlers.menu import router as menu_router
 from bot.handlers.chat import router as chat_router
+from bot.handlers.image import router as image_router
 
 
 async def main():
@@ -13,6 +14,7 @@ async def main():
 
     dp.include_router(start_router)
     dp.include_router(menu_router)
+    dp.include_router(image_router)
     dp.include_router(chat_router)
 
     print("✅ Bot ishga tushdi!")
