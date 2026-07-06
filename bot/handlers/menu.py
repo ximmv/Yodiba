@@ -1,26 +1,26 @@
 from aiogram import Router, F
 from aiogram.types import Message
 
-from database import clear_history
+from bot.keyboards.image import image_styles
 
 router = Router()
 
 
 @router.message(F.text == "💬 Yangi suhbat")
 async def new_chat(message: Message):
-    clear_history(message.from_user.id)
-
     await message.answer(
-        "🧹 Suhbat tarixi tozalandi.\n\n"
-        "💬 Yangi suhbat boshlandi.\n"
-        "Endi istalgan savolingizni yozishingiz mumkin."
+        "💬 Yangi suhbat boshlandi.\n\n"
+        "Menga istalgan savolingizni yozing."
     )
 
 
 @router.message(F.text == "🖼️ Rasm yaratish")
 async def image(message: Message):
     await message.answer(
-        "🖼️ Rasm yaratish funksiyasi tez orada ishga tushadi."
+        "🖼️ <b>Rasm yaratish funksiyasiga xush kelibsiz!</b>\n\n"
+        "🎨 Iltimos, rasm uslubini tanlang.\n\n"
+        "Shundan so'ng yaratmoqchi bo'lgan rasmingizni tavsiflab yozing.",
+        reply_markup=image_styles,
     )
 
 
