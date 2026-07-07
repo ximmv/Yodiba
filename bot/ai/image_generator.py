@@ -1,28 +1,39 @@
-import base64
+import asyncio
 from io import BytesIO
 
-from bot.ai.client import client
+from google import genai
+from google.genai import types
+
+from config.settings import GEMINI_API_KEY
+
+client = genai.Client(api_key=GEMINI_API_KEY)
+
+IMAGE_MODEL = "gemini-2.5-flash-image"
 
 
-async def generate_image(prompt: str):
+def _generate_image_sync(prompt: str) -> BytesIO | None:
+    response = client.models.generate_content(
+        model=IMAGE_MODEL,
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            response_modalities=["IMAGE"],
+        ),
+    )
+
+    for part in response.parts:
+        if part.inline_data is not None:
+            return BytesIO(part.inline_data.data)
+
+    return None
+
+
+async def generate_image(prompt: str) -> BytesIO | None:
+    """
+    Gemini (Nano Banana) orqali rasm yaratadi.
+    Muvaffaqiyatli bo'lsa BytesIO obyekt, aks holda None qaytaradi.
+    """
     try:
-        interaction = client.interactions.create(
-            model="gemini-3.1-flash-image",
-            input=prompt,
-        )
-
-        if not interaction.output_image:
-            return None
-
-        image_bytes = base64.b64decode(
-            interaction.output_image.data
-        )
-
-        image = BytesIO(image_bytes)
-        image.name = "image.png"
-
-        return image
-
+        return await asyncio.to_thread(_generate_image_sync, prompt)
     except Exception as e:
-        print(f"IMAGE ERROR: {e}")
+        print(f"[image_generator] Xatolik: {e}")
         return None
