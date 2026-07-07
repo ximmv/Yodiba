@@ -1,3 +1,5 @@
+import asyncio
+
 from google import genai
 
 from config.settings import GEMINI_API_KEY
@@ -29,6 +31,14 @@ Siz Yodiba AI yordamchisisiz.
 """
 
 
+def _generate_text_sync(conversation: str) -> str:
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=conversation,
+    )
+    return response.text or "Kechirasiz, javob olinmadi."
+
+
 async def generate_text(user_id: int, prompt: str) -> str:
     try:
         history = get_history(user_id)
@@ -40,12 +50,7 @@ async def generate_text(user_id: int, prompt: str) -> str:
 
         conversation += f"user: {prompt}"
 
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=conversation,
-        )
-
-        answer = response.text or "Kechirasiz, javob olinmadi."
+        answer = await asyncio.to_thread(_generate_text_sync, conversation)
 
         save_message(user_id, "user", prompt)
         save_message(user_id, "assistant", answer)
