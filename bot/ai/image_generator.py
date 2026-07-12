@@ -1,35 +1,27 @@
 import asyncio
+import urllib.parse
 from io import BytesIO
 
-from google import genai
-from google.genai import types
+import requests
 
-from config.settings import GEMINI_API_KEY
-
-client = genai.Client(api_key=GEMINI_API_KEY)
-
-IMAGE_MODEL = "gemini-2.5-flash-image"
+IMAGE_BASE_URL = "https://gen.pollinations.ai/image/"
 
 
 def _generate_image_sync(prompt: str) -> BytesIO | None:
-    response = client.models.generate_content(
-        model=IMAGE_MODEL,
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            response_modalities=["IMAGE"],
-        ),
-    )
+    encoded_prompt = urllib.parse.quote(prompt)
+    url = f"{IMAGE_BASE_URL}{encoded_prompt}"
 
-    for part in response.parts:
-        if part.inline_data is not None:
-            return BytesIO(part.inline_data.data)
+    response = requests.get(url, timeout=60)
 
-    return None
+    if response.status_code != 200:
+        raise Exception(f"HTTP {response.status_code}: {response.text[:200]}")
+
+    return BytesIO(response.content)
 
 
 async def generate_image(prompt: str) -> BytesIO | None:
     """
-    Gemini (Nano Banana) orqali rasm yaratadi.
+    Pollinations.ai orqali rasm yaratadi.
     Muvaffaqiyatli bo'lsa BytesIO obyekt, aks holda None qaytaradi.
     """
     try:
